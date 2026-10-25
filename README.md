@@ -1,126 +1,50 @@
-# MEC - Mobile Emergency Chat
+# DisasterChat
 
-A disaster response communication app using **Bluetooth Low Energy (BLE)** mesh networking for offline peer-to-peer messaging when internet and cellular networks are unavailable.
+Offline messaging for emergencies. Phones connect over Bluetooth and pass messages to each other, so you can reach people with no internet or cell service. Placed 1st out of 20 teams at McMaster's Engineering Competition.
 
-## � Installation
+## Why
 
-### Step 1: Download the App
-Download the latest APK from [Google Drive](https://drive.google.com/file/d/1PjPtcKWwy9MaAuHsu44lBqkadifdLprh/view?usp=sharing) page.
+During disasters, cell towers and internet are often the first things to go down. DisasterChat lets people nearby keep communicating by turning their phones into a network.
 
-### Step 2: Download the Model Weights File for Local LLM
-Download the latest version of Gemma 3:1b.litertlm from [Hugging Face](https://huggingface.co/litert-community/Gemma3-1B-IT/tree/main) page.
+## How it works
 
-### Step 2: Install on Android
-- Open the downloaded APK file on your Android device
-- Grant installation permissions if prompted
-- Open the app and allow Bluetooth permissions when requested
+1. When the app opens, each phone starts advertising and scanning over Bluetooth Low Energy (BLE) and connects to nearby devices automatically.
+2. Messages are sent between phones as GATT characteristics.
+3. If the person you're messaging isn't in range, nearby phones relay the message forward, up to 5 hops.
+4. Each BLE connection reaches about 10 m, but relaying lets messages travel 50 m+. Tested across 4 devices.
 
-That's it! No internet or account required.
+react-native-ble-plx only handles scanning and connecting, not advertising, so the advertising side is written as custom Kotlin native modules bridged into React Native.
 
----
+## Features
 
-## 🚨 Key Features
+- Global chat that broadcasts to every connected device
+- One-tap emergency alerts (Help, Medical, Trapped, Flood, Fire, Evacuate)
+- Network stats showing connected devices and signal strength
+- No accounts, no servers, randomized device IDs
 
-### Emergency Mesh Network
-- **Offline Communication**: Works without internet or cellular service
-- **Automatic Mesh**: Messages relay through nearby devices (up to 5 hops)
-- **Auto-Connect**: Devices automatically discover and connect to each other
-- **No Setup Required**: Just open the app - advertising and scanning start automatically
+## Tech
 
-### Quick Emergency Messages
-Send pre-defined emergency alerts with one tap:
-- 🆘 HELP - Need assistance immediately
-- 🏥 MEDICAL - Urgent medical help needed
-- 🚨 TRAPPED - Cannot move, need rescue
-- � FLOOD - Water rising, danger zone
-- 🔥 FIRE - Active fire in area
-- ⚠️ EVACUATE - Leave area immediately
+React Native, Expo, TypeScript, Kotlin, react-native-ble-plx, Gemma 3 1B (on-device LLM)
 
-### Global Chat
-- Broadcast messages to all connected devices
-- View connection count and message history
-- Messages automatically relay to extend range
-- Real-time network status indicators
+```
+app/          screens
+components/   UI components
+modules/      Kotlin native BLE modules
+services/     mesh networking and messaging logic
+hooks/        React hooks
+android/      Android project
+```
 
-### Privacy & Security
-- **100% Local**: All communication stays on-device
-- **No Servers**: Direct device-to-device messaging
-- **No Tracking**: No accounts, no data collection
-- **Anonymous**: Device IDs are randomized
+## Try it
 
----
+Android 8.0+ with Bluetooth 4.0+ only.
 
-## 📱 Requirements
+1. Download the [APK](https://drive.google.com/file/d/1PjPtcKWwy9MaAuHsu44lBqkadifdLprh/view?usp=sharing)
+2. Download the [Gemma 3 1B model file](https://huggingface.co/litert-community/Gemma3-1B-IT/tree/main) for the on-device LLM
+3. Install the APK and allow Bluetooth and location permissions
 
-- **Android 8.0+** (API level 26 or higher)
-- **Bluetooth 4.0+** with BLE support
-- **Location Permission**: Required for BLE scanning on Android
-- **~10 meters range** per device connection
+## Limitations
 
----
-
-## 🔧 How It Works
-
-1. **Open the app** - Advertising and scanning start automatically
-2. **Wait for connections** - Devices discover each other within ~10m
-3. **Send messages** - Tap quick emergency buttons or use global chat
-4. **Messages relay** - Connected devices forward messages automatically
-5. **Mesh extends range** - Reach devices up to 50m+ away through relay
-
-### Network Stats
-- View connected device count
-- Monitor total messages sent
-- Check signal strength status
-- See active connections
-
----
-
-## ⚠️ Important Notes
-
-- **Physical proximity required**: Devices must be within Bluetooth range (~10m)
-- **Battery usage**: Continuous BLE operation uses ~10-15% battery per hour
-- **Android only**: Currently supports Android devices only
-- **Permissions**: Must grant Bluetooth and Location permissions for full functionality
-- **Best for emergencies**: Designed for disaster scenarios when normal networks fail
-
----
-
-## 📖 Use Cases
-
-- **Natural disasters**: Earthquakes, hurricanes, floods
-- **Search and rescue**: Coordinate rescue efforts in remote areas
-- **Emergency evacuation**: Communicate during power/network outages
-- **Disaster response teams**: Field coordination without infrastructure
-- **Community alerts**: Warn neighbors of immediate dangers
-
----
-
-## 🔒 Privacy
-
-- No internet connection required or used
-- No user accounts or registration
-- No data sent to external servers
-- Device IDs are randomly generated
-- Messages stored only on device
-- Bluetooth connections are local only
-
----
-
-## 🛠️ Technical Details
-
-- **Technology**: React Native + Expo
-- **BLE Stack**: react-native-ble-plx
-- **Native Modules**: Kotlin (Android)
-- **Message Format**: GATT characteristics
-- **Network Topology**: Mesh with automatic relay
-- **Max Hops**: 5 (configurable)
-
----
-
-## 📄 License
-
-MIT
-
-## 🙏 Acknowledgments
-
-Built for emergency preparedness and disaster response scenarios where traditional communication infrastructure may be unavailable.
+- Android only
+- Continuous BLE uses about 10 to 15% battery per hour
+- Devices need to be within about 10 m of at least one other phone in the network
