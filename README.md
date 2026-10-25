@@ -1,7 +1,7 @@
 <img width="1920" height="1080" alt="(1) Dylan Li | LinkedIn" src="https://github.com/user-attachments/assets/f3c16147-54f9-4278-8cf5-d0daa8b5b7e3" />
 
 # DisasterChat
-## (🏆 1st at McMaster Engineering Competition 2025)
+🏆 1st at McMaster Engineering Competition 2025
 
 Offline messaging for emergencies. Phones connect over Bluetooth and pass messages to each other, so you can reach people with no internet or cell service. Placed 1st out of 20 teams at McMaster's Engineering Competition.
 
