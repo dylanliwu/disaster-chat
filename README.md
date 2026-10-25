@@ -49,5 +49,5 @@ Android 8.0+ with Bluetooth 4.0+ only.
 ## Limitations
 
 - Android only
-- Continuous BLE uses about 10 to 15% battery per hour
-- Devices need to be within about 10 m of at least one other phone in the network
+- Battery intensive
+- Devices need to be within about 50 m of at least one other phone in the network
